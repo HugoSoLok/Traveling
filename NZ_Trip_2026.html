@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>New Zealand Trip</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <style>
         :root {
             --primary-color: #2c3e50;
@@ -15,8 +17,6 @@
         
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 0;
             background-color: var(--bg-color);
             color: var(--text-color);
         }
@@ -27,8 +27,6 @@
             background: white;
             box-shadow: 0 0 20px rgba(0,0,0,0.2);
             overflow: hidden;
-            display: flex;
-            flex-direction: column;
             position: relative;
         }
 
@@ -72,7 +70,6 @@
 
         header h1 {
             font-size: 2.5em;
-            margin: 0;
             text-transform: uppercase;
             letter-spacing: 5px;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
@@ -80,16 +77,7 @@
 
         header h2 {
             font-size: 1.5em;
-            margin-top: 10px;
             font-weight: 300;
-        }
-
-        .content {
-            padding: 20px;
-        }
-
-        .section {
-            margin-bottom: 30px;
         }
 
         .section-title {
@@ -100,22 +88,41 @@
             font-size: 1.8em;
         }
 
-        .itinerary-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-        }
-
         .day-card {
             background: #f9f9f9;
+            border: none;
             border-left: 5px solid var(--secondary-color);
-            padding: 15px;
-            border-radius: 4px;
         }
 
         .day-card h3 {
             margin: 0 0 10px 0;
             color: var(--primary-color);
+            font-size: 1.25rem;
+        }
+
+        .flight-card {
+            transition: transform 0.2s, box-shadow 0.2s;
+            cursor: pointer;
+        }
+        .flight-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            background-color: #b3e5fc !important;
+        }
+
+        .day-card {
+            transition: transform 0.2s, box-shadow 0.2s;
+            cursor: pointer;
+        }
+        .day-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            background: #ffffff; 
+            border-left-width: 8px;
+        }
+
+        .day-card p {
+            margin-bottom: 0;
         }
 
         .day-card p::first-line {
@@ -124,39 +131,9 @@
             color: var(--secondary-color);
         }
 
-        .highlights {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-
-        .badge {
-            background-color: var(--accent-color);
-            color: white;
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-weight: bold;
-            font-size: 0.9em;
-        }
-
-        .map-section {
-            background-color: #dff9fb;
-            height: 200px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 8px;
-            border: 2px dashed #bdc3c7;
-            color: #7f8c8d;
-            font-style: italic;
-        }
-
         footer {
             background-color: var(--primary-color);
             color: white;
-            text-align: center;
-            padding: 20px;
-            margin-top: auto;
         }
 
         @media print {
@@ -170,168 +147,203 @@
                 max-width: none;
             }
         }
-
-        @media screen and (max-width: 600px) {
-            .poster-container {
-                margin: 0;
-                border-radius: 0;
-                box-shadow: none;
-            }
-            
-            header {
-                height: auto;
-                padding: 40px 20px;
-            }
-
-            header h1 {
-                font-size: 2em;
-                letter-spacing: 2px;
-                line-height: 1.2;
-            }
-
-            header h2 {
-                font-size: 1.2em;
-            }
-
-            .content {
-                padding: 20px 15px;
-            }
-
-            .section-title {
-                font-size: 1.5em;
-            }
-
-            /* Stack specific grids if needed or let auto-fit handle it */
-            .itinerary-grid {
-                grid-template-columns: 1fr; /* Force single column for days */
-            }
-            
-            /* Target the highlights list to be single column */
-            ul[style*="columns: 2"] {
-                columns: 1 !important;
-            }
-        }
     </style>
 </head>
 <body>
 
-    <div class="poster-container">
-        <button class="lang-btn" id="langSwitchBtn">中文</button>
+    <div class="poster-container rounded-3">
+        <button class="lang-btn" onclick="toggleLanguage()" id="langSwitchBtn" type="button">中文</button>
         <header>
-            <h1 data-i18n="title">New Zealand</h1>
-            <h2 data-i18n="subtitle">Honeymoon Adventure</h1>
+            <h1 class="mb-0" data-i18n="title">New Zealand</h1>
+            <h2 class="mt-2" data-i18n="subtitle">Honeymoon Adventure</h1>
         </header>
 
-        <div class="content">
+        <div class="p-4">
             
             <!-- Dates Section -->
-            <div class="section" style="text-align: center;">
+            <div class="mb-4 text-center">
                 <h2 style="color: var(--secondary-color); font-size: 1.5rem;" data-i18n="dates">📅 Feb 9 - Feb 22, 2026</h2>
-                <p style="font-style:italic;" data-i18n="duration">14 Days of Adventure - North & South Island</p>
+                <p class="fst-italic mb-0" data-i18n="duration">14 Days of Adventure - North & South Island</p>
             </div>
 
             <!-- Flights Section -->
-            <div class="section">
+            <div class="mb-4">
                 <h2 class="section-title" data-i18n="flights_title">✈️ Flights</h2>
-                <div class="highlights" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px;">
-                    <div style="background: #e1f5fe; padding: 10px; border-radius: 5px; text-align: center;" data-i18n="flight1">
-                        <strong>CX113</strong><br>9-Feb 21:35<br> (HKG - AKL)
+                <div class="row row-cols-2 row-cols-md-4 g-3">
+                    <div class="col">
+                        <div class="p-2 rounded text-center flight-card" style="background: #e1f5fe;" onclick="showFlightStatus('CX113', '2026-02-09')">
+                            <span data-i18n="flight1"><strong>CX113</strong><br>9-Feb 21:35<br> (HKG - AKL)</span>
+                        </div>
                     </div>
-                    <div style="background: #e1f5fe; padding: 10px; border-radius: 5px; text-align: center;" data-i18n="flight2">
-                        <strong>NZ551</strong><br>12-Feb 15:00<br> (AKL - CHC)
+                    <div class="col">
+                        <div class="p-2 rounded text-center flight-card" style="background: #e1f5fe;" onclick="showFlightStatus('NZ551', '2026-02-12')">
+                            <span data-i18n="flight2"><strong>NZ551</strong><br>12-Feb 15:00<br> (AKL - CHC)</span>
+                        </div>
                     </div>
-                    <div style="background: #e1f5fe; padding: 10px; border-radius: 5px; text-align: center;" data-i18n="flight3">
-                        <strong>NZ616</strong><br>21-Feb 12:10<br> (CHC - AKL)
+                    <div class="col">
+                        <div class="p-2 rounded text-center flight-card" style="background: #e1f5fe;" onclick="showFlightStatus('NZ616', '2026-02-21')">
+                            <span data-i18n="flight3"><strong>NZ616</strong><br>21-Feb 12:10<br> (CHC - AKL)</span>
+                        </div>
                     </div>
-                    <div style="background: #e1f5fe; padding: 10px; border-radius: 5px; text-align: center;" data-i18n="flight4">
-                        <strong>CX198</strong><br>22-Feb 14:55<br> (AKL - HKG)
+                    <div class="col">
+                        <div class="p-2 rounded text-center flight-card" style="background: #e1f5fe;" onclick="showFlightStatus('CX198', '2026-02-22')">
+                            <span data-i18n="flight4"><strong>CX198</strong><br>22-Feb 14:55<br> (AKL - HKG)</span>
+                        </div>
                     </div>
                 </div>
             </div>
 
             <!-- Itinerary Section -->
-            <div class="section">
+            <div class="mb-4">
                 <h2 class="section-title" data-i18n="plan_title">🗺️ The Plan</h2>
-                <div class="itinerary-grid">
-                    <div class="day-card" data-i18n="day1" data-html="true">
-                        <h3>Day 1 (9 Feb)</h3>
-                        <p>✈️ Auckland </p>
+                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+                    <div class="col">
+                        <div class="day-card card h-100 p-3" onclick="showDayDetails('day1', 'Day 1 (9 Feb)')" data-i18n="day1" data-html="true">
+                            <h3>Day 1 (9 Feb)</h3>
+                            <p>✈️ Auckland </p>
+                        </div>
                     </div>
-                    <div class="day-card" data-i18n="day2" data-html="true">
-                        <h3>Day 2 (10 Feb)</h3>
-                        <p> Auckland <br> 📍Queen Street</p>
+                    <div class="col">
+                        <div class="day-card card h-100 p-3" onclick="showDayDetails('day2', 'Day 2 (10 Feb)')" data-i18n="day2" data-html="true">
+                            <h3>Day 2 (10 Feb)</h3>
+                            <p> Auckland <br> 📍Queen Street</p>
+                        </div>
                     </div>
-                    <div class="day-card" data-i18n="day3" data-html="true">
-                        <h3>Day 3 (11 Feb)</h3>
-                        <p>Hamilton <br> 📍Hobbiton Movie Set Tour (2pm)</p>
+                    <div class="col">
+                        <div class="day-card card h-100 p-3" onclick="showDayDetails('day3', 'Day 3 (11 Feb)')" data-i18n="day3" data-html="true">
+                            <h3>Day 3 (11 Feb)</h3>
+                            <p>Hamilton <br> 📍Hobbiton Movie Set Tour (2pm)</p>
+                        </div>
                     </div>
-                    <div class="day-card" data-i18n="day4" data-i18n="true">
-                        <h3>Day 4 (12 Feb)</h3>
-                        <p>✈️ Christchurch <br> 📍New Regent Street</p>
+                    <div class="col">
+                        <div class="day-card card h-100 p-3" onclick="showDayDetails('day4', 'Day 4 (12 Feb)')" data-i18n="day4" data-html="true">
+                            <h3>Day 4 (12 Feb)</h3>
+                            <p>✈️ Christchurch <br> 📍New Regent Street</p>
+                        </div>
                     </div>
-                    <div class="day-card" data-i18n="day5" data-html="true">
-                        <h3>Day 5 (13 Feb)</h3>
-                        <p> Lake Tekapo <br> 📍Mt John Observatory <br> 📍Church of Good Shepherd <br> ✨Stargazing (12am)</p>
+                    <div class="col">
+                        <div class="day-card card h-100 p-3" onclick="showDayDetails('day5', 'Day 5 (13 Feb)')" data-i18n="day5" data-html="true">
+                            <h3>Day 5 (13 Feb)</h3>
+                            <p> Lake Tekapo <br> 📍Mt John Observatory <br> 📍Church of Good Shepherd <br> ✨Stargazing (12am)</p>
+                        </div>
                     </div>
-                    <div class="day-card" data-i18n="day6" data-html="true">
-                        <h3>Day 6 (14 Feb)</h3>
-                        <p> Tasman Glacier <br> 📍Alpine Salmon <br> 📍Mt Cook Airport (12:45pm)</p>
+                    <div class="col">
+                        <div class="day-card card h-100 p-3" onclick="showDayDetails('day6', 'Day 6 (14 Feb)')" data-i18n="day6" data-html="true">
+                            <h3>Day 6 (14 Feb)</h3>
+                            <p> Tasman Glacier <br> 📍Alpine Salmon <br> 📍Mt Cook Airport (12:45pm)</p>
+                        </div>
                     </div>
-                    <div class="day-card" data-i18n="day7" data-html="true">
-                        <h3>Day 7 (15 Feb)</h3>
-                        <p> Mt Cook <br> 📍Hooker Valley Track <br> 📍High Country Salmon</p>
+                    <div class="col">
+                        <div class="day-card card h-100 p-3" onclick="showDayDetails('day7', 'Day 7 (15 Feb)')" data-i18n="day7" data-html="true">
+                            <h3>Day 7 (15 Feb)</h3>
+                            <p> Mt Cook <br> 📍Hooker Valley Track <br> 📍High Country Salmon</p>
+                        </div>
                     </div>
-                    <div class="day-card" data-i18n="day8" data-html="true">
-                        <h3>Day 8 (16 Feb)</h3>
-                        <p> Wanaka <br> 📍Lavender Farm <br> 📍Puzzling World</p>
+                    <div class="col">
+                        <div class="day-card card h-100 p-3" onclick="showDayDetails('day8', 'Day 8 (16 Feb)')" data-i18n="day8" data-html="true">
+                            <h3>Day 8 (16 Feb)</h3>
+                            <p> Wanaka <br> 📍Lavender Farm <br> 📍Puzzling World</p>
+                        </div>
                     </div>
-                    <div class="day-card" data-i18n="day9" data-html="true">
-                        <h3>Day 9 (17 Feb)</h3>
-                        <p> Queenstown <br> 📍Onsen Hot Pools (12:15pm) <br> 📍Skyline Gondola & Luge</p>
+                    <div class="col">
+                        <div class="day-card card h-100 p-3" onclick="showDayDetails('day9', 'Day 9 (17 Feb)')" data-i18n="day9" data-html="true">
+                            <h3>Day 9 (17 Feb)</h3>
+                            <p> Queenstown <br> 📍Onsen Hot Pools (12:15pm) <br> 📍Skyline Gondola & Luge</p>
+                        </div>
                     </div>
-                    <div class="day-card" data-i18n="day10" data-html="true">
-                        <h3>Day 10 (18 Feb)</h3>
-                        <p> Glenorchy <br> 📍Horse Riding (1:30pm) </p>
+                    <div class="col">
+                        <div class="day-card card h-100 p-3" onclick="showDayDetails('day10', 'Day 10 (18 Feb)')" data-i18n="day10" data-html="true">
+                            <h3>Day 10 (18 Feb)</h3>
+                            <p> Glenorchy <br> 📍Horse Riding (1:30pm) </p>
+                        </div>
                     </div>
-                    <div class="day-card" data-i18n="day11" data-html="true">
-                        <h3>Day 11 (19 Feb)</h3>
-                        <p> Queenstown <br> 📍Sky Dive (11:00am)</p>
+                    <div class="col">
+                        <div class="day-card card h-100 p-3" onclick="showDayDetails('day11', 'Day 11 (19 Feb)')" data-i18n="day11" data-html="true">
+                            <h3>Day 11 (19 Feb)</h3>
+                            <p> Queenstown <br> 📍Sky Dive (11:00am)</p>
+                        </div>
                     </div>
-                    <div class="day-card" data-i18n="day12" data-html="true">
-                        <h3>Day 12 (20 Feb)</h3>
-                        <p> Milford Sound <br> 📍1 Day Cruise Tour (08:25am)</p>
+                    <div class="col">
+                        <div class="day-card card h-100 p-3" onclick="showDayDetails('day12', 'Day 12 (20 Feb)')" data-i18n="day12" data-html="true">
+                            <h3>Day 12 (20 Feb)</h3>
+                            <p> Milford Sound <br> 📍1 Day Cruise Tour (08:25am)</p>
+                        </div>
                     </div>
-                    <div class="day-card" data-i18n="day13" data-html="true">
-                        <h3>Day 13 (21 Feb)</h3>
-                        <p>✈️ Auckland <br> 📍Sky Tower</p>
+                    <div class="col">
+                        <div class="day-card card h-100 p-3" onclick="showDayDetails('day13', 'Day 13 (21 Feb)')" data-i18n="day13" data-html="true">
+                            <h3>Day 13 (21 Feb)</h3>
+                            <p>✈️ Auckland <br> 📍Sky Tower</p>
+                        </div>
                     </div>
-                    <div class="day-card" data-i18n="day14" data-html="true">
-                        <h3>Day 14 (22 Feb)</h3>
-                        <p> Auckland <br> 📍Myers Park Playground <br> ✈️ Hong Kong (14:55)</p>
+                    <div class="col">
+                        <div class="day-card card h-100 p-3" onclick="showDayDetails('day14', 'Day 14 (22 Feb)')" data-i18n="day14" data-html="true">
+                            <h3>Day 14 (22 Feb)</h3>
+                            <p> Auckland <br> 📍Myers Park Playground <br> ✈️ Hong Kong (14:55)</p>
+                        </div>
                     </div>
                 </div>
             </div>
 
             <!-- Activities Section -->
-             <div class="section">
+             <div class="mb-4">
                 <h2 class="section-title" data-i18n="highlights_title">✨ Highlights</h2>
-                <ul style="columns: 2; list-style-position: inside;">
-                    <li><a href="https://www.hobbitontours.com/" target="_blank" style="text-decoration:none; color:var(--primary-color); border-bottom:1px solid var(--accent-color);" data-i18n="h_hobbiton">Hobbiton Movie Set</a></li>
-                    <li><a href="https://www.darkskyproject.co.nz/" target="_blank" style="text-decoration:none; color:var(--primary-color); border-bottom:1px solid var(--accent-color);" data-i18n="h_darksky">Dark Sky Project Stargazing</a></li>
-                    <li><a href="https://www.doc.govt.nz/parks-and-recreation/places-to-go/canterbury/places/aoraki-mount-cook-national-park/things-to-do/tracks/hooker-valley-track/" target="_blank" style="text-decoration:none; color:var(--primary-color); border-bottom:1px solid var(--accent-color);" data-i18n="h_hooker">Hooker Valley Track</a></li>
-                    <li><a href="https://www.onsen.co.nz/" target="_blank" style="text-decoration:none; color:var(--primary-color); border-bottom:1px solid var(--accent-color);" data-i18n="h_onsen">Onsen Hot Pools</a></li>
-                    <li><a href="https://www.skyline.co.nz/en/queenstown/" target="_blank" style="text-decoration:none; color:var(--primary-color); border-bottom:1px solid var(--accent-color);" data-i18n="h_skyline">Skyline Gondola & Luge</a></li>
-                    <li><a href="https://www.highcountryhorses.nz/" target="_blank" style="text-decoration:none; color:var(--primary-color); border-bottom:1px solid var(--accent-color);" data-i18n="h_horse">Glenorchy Horse Riding</a></li>
-                    <li><a href="https://www.nzoneskydive.co.nz/" target="_blank" style="text-decoration:none; color:var(--primary-color); border-bottom:1px solid var(--accent-color);" data-i18n="h_skydive">NZONE Sky Dive</a></li>
-                    <li><a href="https://www.milford-sound.co.nz/milford-sound-cruises/" target="_blank" style="text-decoration:none; color:var(--primary-color); border-bottom:1px solid var(--accent-color);" data-i18n="h_milford">Milford Sound Cruise</a></li>
+                <ul class="list-unstyled row row-cols-1 row-cols-sm-2 ps-3">
+                    <li class="mb-2"><a href="https://www.hobbitontours.com/" target="_blank" class="text-decoration-none" style="color:var(--primary-color); border-bottom:1px solid var(--accent-color);" data-i18n="h_hobbiton">Hobbiton Movie Set</a></li>
+                    <li class="mb-2"><a href="https://www.darkskyproject.co.nz/" target="_blank" class="text-decoration-none" style="color:var(--primary-color); border-bottom:1px solid var(--accent-color);" data-i18n="h_darksky">Dark Sky Project Stargazing</a></li>
+                    <li class="mb-2"><a href="https://www.doc.govt.nz/parks-and-recreation/places-to-go/canterbury/places/aoraki-mount-cook-national-park/things-to-do/tracks/hooker-valley-track/" target="_blank" class="text-decoration-none" style="color:var(--primary-color); border-bottom:1px solid var(--accent-color);" data-i18n="h_hooker">Hooker Valley Track</a></li>
+                    <li class="mb-2"><a href="https://www.onsen.co.nz/" target="_blank" class="text-decoration-none" style="color:var(--primary-color); border-bottom:1px solid var(--accent-color);" data-i18n="h_onsen">Onsen Hot Pools</a></li>
+                    <li class="mb-2"><a href="https://www.skyline.co.nz/en/queenstown/" target="_blank" class="text-decoration-none" style="color:var(--primary-color); border-bottom:1px solid var(--accent-color);" data-i18n="h_skyline">Skyline Gondola & Luge</a></li>
+                    <li class="mb-2"><a href="https://www.highcountryhorses.nz/" target="_blank" class="text-decoration-none" style="color:var(--primary-color); border-bottom:1px solid var(--accent-color);" data-i18n="h_horse">Glenorchy Horse Riding</a></li>
+                    <li class="mb-2"><a href="https://www.nzoneskydive.co.nz/" target="_blank" class="text-decoration-none" style="color:var(--primary-color); border-bottom:1px solid var(--accent-color);" data-i18n="h_skydive">NZONE Sky Dive</a></li>
+                    <li class="mb-2"><a href="https://www.milford-sound.co.nz/milford-sound-cruises/" target="_blank" class="text-decoration-none" style="color:var(--primary-color); border-bottom:1px solid var(--accent-color);" data-i18n="h_milford">Milford Sound Cruise</a></li>
                 </ul>
              </div>
 
         </div>
 
-        <footer>
-            <p data-i18n="quote">"Traveling – it leaves you speechless, then turns you into a storyteller."</p>
+        <footer class="text-center p-4 mt-auto">
+            <p class="mb-0" data-i18n="quote">"Traveling – it leaves you speechless, then turns you into a storyteller."</p>
         </footer>
+    </div>
+
+    <!-- Flight Status Modal -->
+    <div class="modal fade" id="flightStatusModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header" style="background-color: var(--primary-color); color: white;">
+            <h5 class="modal-title" id="flightStatusModalLabel" data-i18n="modal_title">Flight Status</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body text-center">
+            <p class="mb-4 lead" id="flightStatusText"></p>
+            <button id="flightSearchBtn" class="btn btn-lg w-100" style="background-color: var(--accent-color); color: white;" data-i18n="search_btn">
+                🔍 Search Status
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Day Details Modal -->
+    <div class="modal fade" id="dayDetailsModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+          <div class="modal-header" style="background-color: var(--secondary-color); color: white;">
+            <h5 class="modal-title" id="dayDetailsModalLabel">Day Details</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <h5 class="border-bottom pb-2 mb-3" data-i18n="detail_route">🗺️ Detailed Route</h5>
+            <p id="dayModalRoute" class="mb-4"></p>
+            
+            <h5 class="border-bottom pb-2 mb-3" data-i18n="detail_hotel">🏨 Hotel</h5>
+            <p id="dayModalHotel" class="mb-4"></p>
+            
+            <h5 class="border-bottom pb-2 mb-3" data-i18n="detail_dining">🍽️ Dining</h5>
+            <p id="dayModalDining" class="mb-4"></p>
+          </div>
+        </div>
+      </div>
     </div>
 
 <script>
@@ -354,6 +366,9 @@
             h_milford: "Milford Sound Cruise",
             quote: "\"Traveling – it leaves you speechless, then turns you into a storyteller.\"",
             toggle_btn: "中文",
+            modal_title: "Flight Status",
+            search_btn: "🔍 Search Status",
+            status_text: "Check real-time timeline, gate, and baggage info for {flight} on {date}",
             flight1: "<strong>CX113</strong><br>9-Feb 21:35<br> (HKG - AKL)",
             flight2: "<strong>NZ551</strong><br>12-Feb 15:00<br> (AKL - CHC)",
             flight3: "<strong>NZ616</strong><br>21-Feb 12:10<br> (CHC - AKL)",
@@ -371,7 +386,24 @@
             day11: "<h3>Day 11 (19 Feb)</h3><p> Queenstown <br> 📍Sky Dive (11:00am)</p>",
             day12: "<h3>Day 12 (20 Feb)</h3><p> Milford Sound <br> 📍1 Day Cruise Tour (08:25am)</p>",
             day13: "<h3>Day 13 (21 Feb)</h3><p>✈️ Auckland <br> 📍Sky Tower</p>",
-            day14: "<h3>Day 14 (22 Feb)</h3><p> Auckland <br> 📍Myers Park Playground <br> ✈️ Hong Kong (14:55)</p>"
+            day14: "<h3>Day 14 (22 Feb)</h3><p> Auckland <br> 📍Myers Park Playground <br> ✈️ Hong Kong (14:55)</p>",
+            detail_route: "🗺️ Detailed Route",
+            detail_hotel: "🏨 Hotel",
+            detail_dining: "🍽️ Dining",
+            day1_route: "N/A", day1_hotel: "N/A", day1_dining: "N/A",
+            day2_route: "14:30 Car Rental (SNAP 617620721)", day2_hotel: "Auckland City Hotel <br>Studio King Room<br>Agoda (1667555087)", day2_dining: "Gorilla Kitchen",
+            day3_route: "Drive to Hamilton (1hr 20min)<br>drop luggage<br>Drive to Shires Rest (40min)", day3_hotel: "Park View Motor Lodge <br>Studio <br>Agoda (1667558523)", day3_dining: "TBC",
+            day4_route: "Drive to Auckland <br> Car Return <br> 15:00 Flight to Christchurch <br> 16:30 Car Rental (ezi 687307984)", day4_hotel: "Carnmore Hotel Christchurch <br>King Studio Room with onsite parking <br> 176287312077693", day4_dining: "TBC",
+            day5_route: "Drive to Fairlie (2hr 20min)<br>Fairlie Bakehouse <br>Drive to Lake Tekapo (40min) <br>drop luggage ", day5_hotel: "Haka House Lake Tekapo <br>King Room Ensuite with lake view <br>Agoda (1666039284)", day5_dining: "TBC",
+            day6_route: "Drive to Mt Cook Airport (1hr) <br> Punatahu Visitor Centre <br> Tasman Glacier tour", day6_hotel: "The Hermitage Hotel <br>Standard Mt Cook King, Panorama Dinner & Breakfast (R15593)", day6_dining: "TBC",
+            day7_route: "Hooker Valley Track <br> High Country Salmon <br> Drive to Wanaka (1hr 30min)", day7_hotel: "Belvedere Apartments <br>1 Bedroom Standard Apartment", day7_dining: "Big Fig Wanaka",
+            day8_route: "Wanaka Lavender Farm <br> Puzzling World", day8_hotel: "Belvedere Apartments <br>1 Bedroom Standard Apartment", day8_dining: "Charlie Brown Crepes (Breakfast)",
+            day9_route: "Drive to Queenstown (1hr 15min) <br> Onsen Hot Pools (12:15pm) <br> Skyline Gondola & Luge", day9_hotel: "Airbnb", day9_dining: "Scroggin Coffee and Eatery (Breakfast) <br> Gantley's Tavern (Lunch) <br> Fergburger (Dinner)",
+            day10_route: "Drive to Glenorchy (45min) <br> Horse Riding (1:30pm) <br> Paradise Road", day10_hotel: "Airbnb", day10_dining: "Bespoke Kitchen (Breakfast) <br> Mrs Woolly's General Store (Lunch)",
+            day11_route: "Sky Dive (11:00am)", day11_hotel: "Airbnb", day11_dining: "Boardwalk",
+            day12_route: "Milford Sound Cruise (08:25am at Athol Street Bus Stop)", day12_hotel: "Airbnb", day12_dining: "TBC",
+            day13_route: "Car Return at Queenstown Airport <br> 12:10 Flight to Auckland", day13_hotel: "VR Queen Street Hotel & Suites <br> 1 Bedroom Suite <br>Agoda (1668405506)", day13_dining: "TBC",
+            day14_route: "Myers Park Playground <br> 14:55 Flight to Hong Kong", day14_hotel: "N/A", day14_dining: "N/A"
         },
         zh: {
             title: "新西蘭",
@@ -391,6 +423,9 @@
             h_milford: "米福峽灣遊船",
             quote: "「旅行——讓你失語，然後將你變成一個說書人。」",
             toggle_btn: "English",
+            modal_title: "航班狀態",
+            search_btn: "🔍 搜尋狀態",
+            status_text: "查看 {flight} 在 {date} 的實時時間表、登機閘口及行李資訊",
             flight1: "<strong>CX113</strong><br>2月9日 21:35<br> (香港 - 奧克蘭)",
             flight2: "<strong>NZ551</strong><br>2月12日 15:00<br> (奧克蘭 - 基督城)",
             flight3: "<strong>NZ616</strong><br>2月21日 12:10<br> (基督城 - 奧克蘭)",
@@ -407,17 +442,31 @@
             day10: "<h3>第10天 (2月18日)</h3><p> 格林諾奇 <br> 📍騎馬體驗 (下午1:30) </p>",
             day11: "<h3>第11天 (2月19日)</h3><p> 皇后鎮 <br> 📍高空跳傘 (上午11:00)</p>",
             day12: "<h3>第12天 (2月20日)</h3><p> 米福峽灣 <br> 📍一日遊船 (上午08:25)</p>",
-            day13: "<h3>第13天 (21 Feb)</h3><p>✈️ Auckland <br> 📍Sky Tower</p>",
-            day14: "<h3>第14天 (22 Feb)</h3><p> 奧克蘭 <br> 📍Myers Park 遊樂場 <br> ✈️ 香港 (下午2:55)</p>"
+            day13: "<h3>第13天 (2月21日)</h3><p>✈️ 奧克蘭 <br> 📍天空塔</p>",
+            day14: "<h3>第14天 (2月22日)</h3><p> 奧克蘭 <br> 📍Myers Park 遊樂場 <br> ✈️ 香港 (下午2:55)</p>",
+            detail_route: "🗺️ 詳細路線",
+            detail_hotel: "🏨 酒店",
+            detail_dining: "🍽️ 餐飲",
+            day1_route: "-", day1_hotel: "-", day1_dining: "-",
+            day2_route: "14:30 Car Rental (SNAP 617620721)", day2_hotel: "Auckland City Hotel <br>Studio King Room<br>Agoda (1667555087)", day2_dining: "Gorilla Kitchen",
+            day3_route: "Drive to Hamilton (1hr 20min)<br>drop luggage<br>Drive to Shires Rest (40min)", day3_hotel: "Park View Motor Lodge <br>Studio <br>Agoda (1667558523)", day3_dining: "TBC",
+            day4_route: "Drive to Auckland <br> Car Return <br> 15:00 Flight to Christchurch <br> 16:30 Car Rental (ezi 687307984)", day4_hotel: "Carnmore Hotel Christchurch <br>King Studio Room with onsite parking <br> 176287312077693", day4_dining: "TBC",
+            day5_route: "Drive to Fairlie (2hr 20min)<br>Fairlie Bakehouse <br>Drive to Lake Tekapo (40min) <br>drop luggage ", day5_hotel: "Haka House Lake Tekapo <br>King Room Ensuite with lake view <br>Agoda (1666039284)", day5_dining: "TBC",
+            day6_route: "Drive to Mt Cook Airport (1hr) <br> Punatahu Visitor Centre <br> Tasman Glacier tour", day6_hotel: "The Hermitage Hotel <br>Standard Mt Cook King, Panorama Dinner & Breakfast (R15593)", day6_dining: "TBC",
+            day7_route: "Hooker Valley Track <br> High Country Salmon <br> Drive to Wanaka (1hr 30min)", day7_hotel: "Belvedere Apartments <br>1 Bedroom Standard Apartment", day7_dining: "Big Fig Wanaka",
+            day8_route: "Wanaka Lavender Farm <br> Puzzling World", day8_hotel: "Belvedere Apartments <br>1 Bedroom Standard Apartment", day8_dining: "Charlie Brown Crepes (Breakfast)",
+            day9_route: "Drive to Queenstown (1hr 15min) <br> Onsen Hot Pools (12:15pm) <br> Skyline Gondola & Luge", day9_hotel: "Airbnb", day9_dining: "Scroggin Coffee and Eatery (Breakfast) <br> Gantley's Tavern (Lunch) <br> Fergburger (Dinner)",
+            day10_route: "Drive to Glenorchy (45min) <br> Horse Riding (1:30pm) <br> Paradise Road", day10_hotel: "Airbnb", day10_dining: "Bespoke Kitchen (Breakfast) <br> Mrs Woolly's General Store (Lunch)",
+            day11_route: "Sky Dive (11:00am)", day11_hotel: "Airbnb", day11_dining: "Boardwalk",
+            day12_route: "Milford Sound Cruise (08:25am at Athol Street Bus Stop)", day12_hotel: "Airbnb", day12_dining: "TBC",
+            day13_route: "Car Return at Queenstown Airport <br> 12:10 Flight to Auckland", day13_hotel: "VR Queen Street Hotel & Suites <br> 1 Bedroom Suite <br>Agoda (1668405506)", day13_dining: "TBC",
+            day14_route: "Myers Park Playground <br> 14:55 Flight to Hong Kong", day14_hotel: "N/A", day14_dining: "N/A"
         }
     };
 
     let currentLang = 'en';
 
     function toggleLanguage() {
-        // Prevent default behavior if triggered by link/form
-        if (event) event.preventDefault();
-        
         currentLang = currentLang === 'en' ? 'zh' : 'en';
         const btn = document.getElementById('langSwitchBtn');
         if (btn) btn.textContent = translations[currentLang].toggle_btn;
@@ -432,20 +481,76 @@
                 }
             }
         });
+
+        // Also update any open modal elements if needed (though usually modal is closed when switching lang)
+        // But the button text inside the modal is static so data-i18n handles it if we added it there.
+        // We added data-i18n="search_btn" to the button and "modal_title" to the header.
     }
 
-    // Modern event handling for mobile robustness
-    document.addEventListener('DOMContentLoaded', function() {
-        const btn = document.getElementById('langSwitchBtn');
-        if (btn) {
-            btn.addEventListener('click', toggleLanguage);
-            btn.addEventListener('touchend', function(e) {
-                // Prevent ghost click
-                e.preventDefault(); 
-                toggleLanguage();
-            });
+    function showFlightStatus(flightNumber, date) {
+        const modalLabel = document.getElementById('flightStatusModalLabel');
+        const searchBtn = document.getElementById('flightSearchBtn');
+        const statusText = document.getElementById('flightStatusText');
+        
+        // Update Title if translation exists
+        if(modalLabel) {
+            // If the modal title has data-i18n, the toggleLanguage() handles the general translation,
+            // but here we might want to be specific or rely on the static key.
+            // Let's just update the text content with flight info appended if needed, 
+            // OR keep it simple "Flight Status" (translated).
+            // Actually, the user asked for the modal to be applied to Chinese content.
+            // The title 'Flight Status' is static. Let's just rely on data-i18n if possible, 
+            // but we need to update the text content NOW based on current language.
+             modalLabel.textContent = translations[currentLang]['modal_title'] + ': ' + flightNumber;
         }
-    });
+
+        if(statusText) {
+             let rawText = translations[currentLang]['status_text'];
+             // Simple replace for placeholders
+             let finalText = rawText.replace('{flight}', flightNumber).replace('{date}', date);
+             statusText.textContent = finalText;
+        }
+        
+        // Update button text just in case
+        if(searchBtn) {
+            searchBtn.textContent = translations[currentLang]['search_btn'];
+            searchBtn.onclick = function() {
+                let query = 'flight status ' + flightNumber;
+                if(date) query += ' ' + date;
+                const url = 'https://www.google.com/search?q=' + encodeURIComponent(query);
+                window.open(url, '_blank');
+            };
+        }
+        
+        const myModal = new bootstrap.Modal(document.getElementById('flightStatusModal'));
+        myModal.show();
+    }
+
+    function showDayDetails(dayKey, defaultTitle) {
+        const modalLabel = document.getElementById('dayDetailsModalLabel');
+        
+        // Try to extract title from translation to support i18n
+        // The translation value is like "<h3>Title</h3><p>...</p>"
+        let fullHtml = translations[currentLang][dayKey];
+        let title = defaultTitle;
+        if(fullHtml) {
+             const match = fullHtml.match(/<h3>(.*?)<\/h3>/);
+             if(match && match[1]) title = match[1];
+        }
+        
+        if(modalLabel) modalLabel.innerHTML = title; // innerHTML because title might contain entities, though textContent is safer. use innerHTML to be safe with match.
+        
+        const route = translations[currentLang][dayKey + '_route'];
+        const hotel = translations[currentLang][dayKey + '_hotel'];
+        const dining = translations[currentLang][dayKey + '_dining'];
+        
+        document.getElementById('dayModalRoute').innerHTML = route || (currentLang === 'en' ? 'TBC' : '待定');
+        document.getElementById('dayModalHotel').innerHTML = hotel || (currentLang === 'en' ? 'TBC' : '待定');
+        document.getElementById('dayModalDining').innerHTML = dining || (currentLang === 'en' ? 'TBC' : '待定');
+        
+        const myModal = new bootstrap.Modal(document.getElementById('dayDetailsModal'));
+        myModal.show();
+    }
 </script>
 
 </body>
