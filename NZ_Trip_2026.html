@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Zealand Trip Poster</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #27ae60;
+            --accent-color: #e67e22;
+            --bg-color: #ecf0f1;
+            --text-color: #333;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+        }
+
+        .poster-container {
+            max-width: 800px; /* A4 width approx */
+            margin: 20px auto;
+            background: white;
+            box-shadow: 0 0 20px rgba(0,0,0,0.2);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .lang-btn {
+            position: absolute; 
+            top: 20px; 
+            right: 20px; 
+            z-index: 1000; 
+            padding: 10px 20px; 
+            cursor: pointer; 
+            background: rgba(255,255,255,0.2); 
+            border: 1px solid white; 
+            border-radius: 20px;
+            color: white;
+            font-weight: bold;
+            backdrop-filter: blur(5px);
+            transition: all 0.3s ease;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+        }
+
+        .lang-btn:hover {
+            background: white;
+            color: var(--primary-color);
+        }
+
+        header {
+            background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('https://images.unsplash.com/photo-1469521669194-babb45f83544?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80'); /* NZ Landscape */
+            background-size: cover;
+            background-position: center;
+            height: 150px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: white;
+            padding: 20px;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin: 0;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        header h2 {
+            font-size: 1.5em;
+            margin-top: 10px;
+            font-weight: 300;
+        }
+
+        .content {
+            padding: 20px;
+        }
+
+        .section {
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            color: var(--primary-color);
+            border-bottom: 3px solid var(--accent-color);
+            display: inline-block;
+            margin-bottom: 15px;
+            font-size: 1.8em;
+        }
+
+        .itinerary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .day-card {
+            background: #f9f9f9;
+            border-left: 5px solid var(--secondary-color);
+            padding: 15px;
+            border-radius: 4px;
+        }
+
+        .day-card h3 {
+            margin: 0 0 10px 0;
+            color: var(--primary-color);
+        }
+
+        .day-card p::first-line {
+            font-weight: bold;
+            font-size: 1.1em;
+            color: var(--secondary-color);
+        }
+
+        .highlights {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .badge {
+            background-color: var(--accent-color);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+
+        .map-section {
+            background-color: #dff9fb;
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            border: 2px dashed #bdc3c7;
+            color: #7f8c8d;
+            font-style: italic;
+        }
+
+        footer {
+            background-color: var(--primary-color);
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-top: auto;
+        }
+
+        @media print {
+            body {
+                background: none;
+            }
+            .poster-container {
+                box-shadow: none;
+                margin: 0;
+                width: 100%;
+                max-width: none;
+            }
+        }
+
+        @media screen and (max-width: 600px) {
+            .poster-container {
+                margin: 0;
+                border-radius: 0;
+                box-shadow: none;
+            }
+            
+            header {
+                height: auto;
+                padding: 40px 20px;
+            }
+
+            header h1 {
+                font-size: 2em;
+                letter-spacing: 2px;
+                line-height: 1.2;
+            }
+
+            header h2 {
+                font-size: 1.2em;
+            }
+
+            .content {
+                padding: 20px 15px;
+            }
+
+            .section-title {
+                font-size: 1.5em;
+            }
+
+            /* Stack specific grids if needed or let auto-fit handle it */
+            .itinerary-grid {
+                grid-template-columns: 1fr; /* Force single column for days */
+            }
+            
+            /* Target the highlights list to be single column */
+            ul[style*="columns: 2"] {
+                columns: 1 !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="poster-container">
+        <button class="lang-btn" id="langSwitchBtn">中文</button>
+        <header>
+            <h1 data-i18n="title">New Zealand</h1>
+            <h2 data-i18n="subtitle">Honeymoon Adventure</h1>
+        </header>
+
+        <div class="content">
+            
+            <!-- Dates Section -->
+            <div class="section" style="text-align: center;">
+                <h2 style="color: var(--secondary-color); font-size: 1.5rem;" data-i18n="dates">📅 Feb 9 - Feb 22, 2026</h2>
+                <p style="font-style:italic;" data-i18n="duration">14 Days of Adventure - North & South Island</p>
+            </div>
+
+            <!-- Flights Section -->
+            <div class="section">
+                <h2 class="section-title" data-i18n="flights_title">✈️ Flights</h2>
+                <div class="highlights" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px;">
+                    <div style="background: #e1f5fe; padding: 10px; border-radius: 5px; text-align: center;" data-i18n="flight1">
+                        <strong>CX113</strong><br>9-Feb 21:35<br> (HKG - AKL)
+                    </div>
+                    <div style="background: #e1f5fe; padding: 10px; border-radius: 5px; text-align: center;" data-i18n="flight2">
+                        <strong>NZ551</strong><br>12-Feb 15:00<br> (AKL - CHC)
+                    </div>
+                    <div style="background: #e1f5fe; padding: 10px; border-radius: 5px; text-align: center;" data-i18n="flight3">
+                        <strong>NZ616</strong><br>21-Feb 12:10<br> (CHC - AKL)
+                    </div>
+                    <div style="background: #e1f5fe; padding: 10px; border-radius: 5px; text-align: center;" data-i18n="flight4">
+                        <strong>CX198</strong><br>22-Feb 14:55<br> (AKL - HKG)
+                    </div>
+                </div>
+            </div>
+
+            <!-- Itinerary Section -->
+            <div class="section">
+                <h2 class="section-title" data-i18n="plan_title">🗺️ The Plan</h2>
+                <div class="itinerary-grid">
+                    <div class="day-card" data-i18n="day1" data-html="true">
+                        <h3>Day 1 (9 Feb)</h3>
+                        <p>✈️ Auckland </p>
+                    </div>
+                    <div class="day-card" data-i18n="day2" data-html="true">
+                        <h3>Day 2 (10 Feb)</h3>
+                        <p> Auckland <br> 📍Queen Street</p>
+                    </div>
+                    <div class="day-card" data-i18n="day3" data-html="true">
+                        <h3>Day 3 (11 Feb)</h3>
+                        <p>Hamilton <br> 📍Hobbiton Movie Set Tour (2pm)</p>
+                    </div>
+                    <div class="day-card" data-i18n="day4" data-i18n="true">
+                        <h3>Day 4 (12 Feb)</h3>
+                        <p>✈️ Christchurch <br> 📍New Regent Street</p>
+                    </div>
+                    <div class="day-card" data-i18n="day5" data-html="true">
+                        <h3>Day 5 (13 Feb)</h3>
+                        <p> Lake Tekapo <br> 📍Mt John Observatory <br> 📍Church of Good Shepherd <br> ✨Stargazing (12am)</p>
+                    </div>
+                    <div class="day-card" data-i18n="day6" data-html="true">
+                        <h3>Day 6 (14 Feb)</h3>
+                        <p> Tasman Glacier <br> 📍Alpine Salmon <br> 📍Mt Cook Airport (12:45pm)</p>
+                    </div>
+                    <div class="day-card" data-i18n="day7" data-html="true">
+                        <h3>Day 7 (15 Feb)</h3>
+                        <p> Mt Cook <br> 📍Hooker Valley Track <br> 📍High Country Salmon</p>
+                    </div>
+                    <div class="day-card" data-i18n="day8" data-html="true">
+                        <h3>Day 8 (16 Feb)</h3>
+                        <p> Wanaka <br> 📍Lavender Farm <br> 📍Puzzling World</p>
+                    </div>
+                    <div class="day-card" data-i18n="day9" data-html="true">
+                        <h3>Day 9 (17 Feb)</h3>
+                        <p> Queenstown <br> 📍Onsen Hot Pools (12:15pm) <br> 📍Skyline Gondola & Luge</p>
+                    </div>
+                    <div class="day-card" data-i18n="day10" data-html="true">
+                        <h3>Day 10 (18 Feb)</h3>
+                        <p> Glenorchy <br> 📍Horse Riding (1:30pm) </p>
+                    </div>
+                    <div class="day-card" data-i18n="day11" data-html="true">
+                        <h3>Day 11 (19 Feb)</h3>
+                        <p> Queenstown <br> 📍Sky Dive (11:00am)</p>
+                    </div>
+                    <div class="day-card" data-i18n="day12" data-html="true">
+                        <h3>Day 12 (20 Feb)</h3>
+                        <p> Milford Sound <br> 📍1 Day Cruise Tour (08:25am)</p>
+                    </div>
+                    <div class="day-card" data-i18n="day13" data-html="true">
+                        <h3>Day 13 (21 Feb)</h3>
+                        <p>✈️ Auckland <br> 📍Sky Tower</p>
+                    </div>
+                    <div class="day-card" data-i18n="day14" data-html="true">
+                        <h3>Day 14 (22 Feb)</h3>
+                        <p> Auckland <br> 📍Myers Park Playground <br> ✈️ Hong Kong (14:55)</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Activities Section -->
+             <div class="section">
+                <h2 class="section-title" data-i18n="highlights_title">✨ Highlights</h2>
+                <ul style="columns: 2; list-style-position: inside;">
+                    <li><a href="https://www.hobbitontours.com/" target="_blank" style="text-decoration:none; color:var(--primary-color); border-bottom:1px solid var(--accent-color);" data-i18n="h_hobbiton">Hobbiton Movie Set</a></li>
+                    <li><a href="https://www.darkskyproject.co.nz/" target="_blank" style="text-decoration:none; color:var(--primary-color); border-bottom:1px solid var(--accent-color);" data-i18n="h_darksky">Dark Sky Project Stargazing</a></li>
+                    <li><a href="https://www.doc.govt.nz/parks-and-recreation/places-to-go/canterbury/places/aoraki-mount-cook-national-park/things-to-do/tracks/hooker-valley-track/" target="_blank" style="text-decoration:none; color:var(--primary-color); border-bottom:1px solid var(--accent-color);" data-i18n="h_hooker">Hooker Valley Track</a></li>
+                    <li><a href="https://www.onsen.co.nz/" target="_blank" style="text-decoration:none; color:var(--primary-color); border-bottom:1px solid var(--accent-color);" data-i18n="h_onsen">Onsen Hot Pools</a></li>
+                    <li><a href="https://www.skyline.co.nz/en/queenstown/" target="_blank" style="text-decoration:none; color:var(--primary-color); border-bottom:1px solid var(--accent-color);" data-i18n="h_skyline">Skyline Gondola & Luge</a></li>
+                    <li><a href="https://www.highcountryhorses.nz/" target="_blank" style="text-decoration:none; color:var(--primary-color); border-bottom:1px solid var(--accent-color);" data-i18n="h_horse">Glenorchy Horse Riding</a></li>
+                    <li><a href="https://www.nzoneskydive.co.nz/" target="_blank" style="text-decoration:none; color:var(--primary-color); border-bottom:1px solid var(--accent-color);" data-i18n="h_skydive">NZONE Sky Dive</a></li>
+                    <li><a href="https://www.milford-sound.co.nz/milford-sound-cruises/" target="_blank" style="text-decoration:none; color:var(--primary-color); border-bottom:1px solid var(--accent-color);" data-i18n="h_milford">Milford Sound Cruise</a></li>
+                </ul>
+             </div>
+
+        </div>
+
+        <footer>
+            <p data-i18n="quote">"Traveling – it leaves you speechless, then turns you into a storyteller."</p>
+        </footer>
+    </div>
+
+<script>
+    const translations = {
+        en: {
+            title: "New Zealand",
+            subtitle: "Honeymoon Adventure",
+            dates: "📅 Feb 9 - Feb 22, 2026",
+            duration: "14 Days of Adventure - North & South Island",
+            flights_title: "✈️ Flights",
+            plan_title: "🗺️ The Plan",
+            highlights_title: "✨ Highlights",
+            h_hobbiton: "Hobbiton Movie Set",
+            h_darksky: "Dark Sky Project Stargazing",
+            h_hooker: "Hooker Valley Track",
+            h_onsen: "Onsen Hot Pools",
+            h_skyline: "Skyline Gondola & Luge",
+            h_horse: "Glenorchy Horse Riding",
+            h_skydive: "NZONE Sky Dive",
+            h_milford: "Milford Sound Cruise",
+            quote: "\"Traveling – it leaves you speechless, then turns you into a storyteller.\"",
+            toggle_btn: "中文",
+            flight1: "<strong>CX113</strong><br>9-Feb 21:35<br> (HKG - AKL)",
+            flight2: "<strong>NZ551</strong><br>12-Feb 15:00<br> (AKL - CHC)",
+            flight3: "<strong>NZ616</strong><br>21-Feb 12:10<br> (CHC - AKL)",
+            flight4: "<strong>CX198</strong><br>22-Feb 14:55<br> (AKL - HKG)",
+            day1: "<h3>Day 1 (9 Feb)</h3><p>✈️ Auckland </p>",
+            day2: "<h3>Day 2 (10 Feb)</h3><p> Auckland <br> 📍Queen Street</p>",
+            day3: "<h3>Day 3 (11 Feb)</h3><p>Hamilton <br> 📍Hobbiton Movie Set Tour (2pm)</p>",
+            day4: "<h3>Day 4 (12 Feb)</h3><p>✈️ Christchurch <br> 📍New Regent Street</p>",
+            day5: "<h3>Day 5 (13 Feb)</h3><p> Lake Tekapo <br> 📍Mt John Observatory <br> 📍Church of Good Shepherd <br> ✨Stargazing (12am)</p>",
+            day6: "<h3>Day 6 (14 Feb)</h3><p> Tasman Glacier <br> 📍Alpine Salmon <br> 📍Mt Cook Airport (12:45pm)</p>",
+            day7: "<h3>Day 7 (15 Feb)</h3><p> Mt Cook <br> 📍Hooker Valley Track <br> 📍High Country Salmon</p>",
+            day8: "<h3>Day 8 (16 Feb)</h3><p> Wanaka <br> 📍Lavender Farm <br> 📍Puzzling World</p>",
+            day9: "<h3>Day 9 (17 Feb)</h3><p> Queenstown <br> 📍Onsen Hot Pools (12:15pm) <br> 📍Skyline Gondola & Luge</p>",
+            day10: "<h3>Day 10 (18 Feb)</h3><p> Glenorchy <br> 📍Horse Riding (1:30pm) </p>",
+            day11: "<h3>Day 11 (19 Feb)</h3><p> Queenstown <br> 📍Sky Dive (11:00am)</p>",
+            day12: "<h3>Day 12 (20 Feb)</h3><p> Milford Sound <br> 📍1 Day Cruise Tour (08:25am)</p>",
+            day13: "<h3>Day 13 (21 Feb)</h3><p>✈️ Auckland <br> 📍Sky Tower</p>",
+            day14: "<h3>Day 14 (22 Feb)</h3><p> Auckland <br> 📍Myers Park Playground <br> ✈️ Hong Kong (14:55)</p>"
+        },
+        zh: {
+            title: "新西蘭",
+            subtitle: "蜜月冒險之旅",
+            dates: "📅 2026年 2月9日 - 2月22日",
+            duration: "14天冒險之旅 - 南北島",
+            flights_title: "✈️ 航班",
+            plan_title: "🗺️ 行程計劃",
+            highlights_title: "✨ 重點活動",
+            h_hobbiton: "哈比人村電影場景",
+            h_darksky: "暗黑天空計劃觀星",
+            h_hooker: "胡克谷步道",
+            h_onsen: "Onsen 溫泉體驗",
+            h_skyline: "Skyline 纜車與滑板車",
+            h_horse: "格林諾奇騎馬",
+            h_skydive: "NZONE 高空跳傘",
+            h_milford: "米福峽灣遊船",
+            quote: "「旅行——讓你失語，然後將你變成一個說書人。」",
+            toggle_btn: "English",
+            flight1: "<strong>CX113</strong><br>2月9日 21:35<br> (香港 - 奧克蘭)",
+            flight2: "<strong>NZ551</strong><br>2月12日 15:00<br> (奧克蘭 - 基督城)",
+            flight3: "<strong>NZ616</strong><br>2月21日 12:10<br> (基督城 - 奧克蘭)",
+            flight4: "<strong>CX198</strong><br>2月22日 14:55<br> (奧克蘭 - 香港)",
+            day1: "<h3>第1天 (2月9日)</h3><p>✈️ 奧克蘭 </p>",
+            day2: "<h3>第2天 (2月10日)</h3><p> 奧克蘭 <br> 📍皇后街</p>",
+            day3: "<h3>第3天 (2月11日)</h3><p>漢密爾頓 <br> 📍哈比人村導賞團 (下午2點)</p>",
+            day4: "<h3>第4天 (2月12日)</h3><p>✈️ 基督城 <br> 📍新攝政街</p>",
+            day5: "<h3>第5天 (2月13日)</h3><p> 特卡波湖 <br> 📍約翰山天文台 <br> 📍好牧羊人教堂 <br> ✨觀星之旅 (午夜12點)</p>",
+            day6: "<h3>第6天 (2月14日)</h3><p> 塔斯曼冰川 <br> 📍高山三文魚 <br> 📍庫克山機場 (下午12:45)</p>",
+            day7: "<h3>第7天 (2月15日)</h3><p> 庫克山 <br> 📍胡克谷步道 <br> 📍High Country 三文魚</p>",
+            day8: "<h3>第8天 (2月16日)</h3><p> 瓦納卡 <br> 📍薰衣草農場 <br> 📍Puzzling World</p>",
+            day9: "<h3>第9天 (2月17日)</h3><p> 皇后鎮 <br> 📍Onsen 溫泉 (下午12:15) <br> 📍Skyline 纜車與滑板車</p>",
+            day10: "<h3>第10天 (2月18日)</h3><p> 格林諾奇 <br> 📍騎馬體驗 (下午1:30) </p>",
+            day11: "<h3>第11天 (2月19日)</h3><p> 皇后鎮 <br> 📍高空跳傘 (上午11:00)</p>",
+            day12: "<h3>第12天 (2月20日)</h3><p> 米福峽灣 <br> 📍一日遊船 (上午08:25)</p>",
+            day13: "<h3>第13天 (21 Feb)</h3><p>✈️ Auckland <br> 📍Sky Tower</p>",
+            day14: "<h3>第14天 (22 Feb)</h3><p> 奧克蘭 <br> 📍Myers Park 遊樂場 <br> ✈️ 香港 (下午2:55)</p>"
+        }
+    };
+
+    let currentLang = 'en';
+
+    function toggleLanguage() {
+        // Prevent default behavior if triggered by link/form
+        if (event) event.preventDefault();
+        
+        currentLang = currentLang === 'en' ? 'zh' : 'en';
+        const btn = document.getElementById('langSwitchBtn');
+        if (btn) btn.textContent = translations[currentLang].toggle_btn;
+        
+        document.querySelectorAll('[data-i18n]').forEach(el => {
+            const key = el.getAttribute('data-i18n');
+            if (translations[currentLang][key]) {
+                if (el.getAttribute('data-html') === 'true' || key.startsWith('flight')) {
+                    el.innerHTML = translations[currentLang][key];
+                } else {
+                    el.textContent = translations[currentLang][key];
+                }
+            }
+        });
+    }
+
+    // Modern event handling for mobile robustness
+    document.addEventListener('DOMContentLoaded', function() {
+        const btn = document.getElementById('langSwitchBtn');
+        if (btn) {
+            btn.addEventListener('click', toggleLanguage);
+            btn.addEventListener('touchend', function(e) {
+                // Prevent ghost click
+                e.preventDefault(); 
+                toggleLanguage();
+            });
+        }
+    });
+</script>
+
+</body>
+</html>
